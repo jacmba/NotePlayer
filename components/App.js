@@ -6,21 +6,73 @@
  * @flow strict-local
  */
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import type {Node} from 'react';
-import {View, StatusBar, StyleSheet, Text} from 'react-native';
+import {
+  View,
+  StatusBar,
+  StyleSheet,
+  Text,
+  PermissionsAndroid,
+  ToastAndroid,
+} from 'react-native';
 import * as fs from 'react-native-fs';
+import TrackItem from './TrackItem';
 
-const dir = '/storage/'; // '/WhatsApp/Media/WhatsApp VoiceNotes';
+const dir =
+  fs.ExternalStorageDirectoryPath + '/WhatsApp/Media/WhatsApp Voice Notes';
 
 const App: () => Node = () => {
-  //const [files, setFiles] = useState();
-  fs.readDir(dir).then(console.log).catch(console.error);
+  const [files, setFiles] = useState([]);
+
+  useEffect(() => {
+    const fetchPermissions = async () => {
+      const granted = await PermissionsAndroid.check(
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+      );
+
+      if (granted) {
+        try {
+          const fileList = await (
+            await fs.readDir(dir)
+          )
+            .filter(d => !d.name.startsWith('.') && d.isDirectory())
+            .reduce(async (list, d) => {
+              try {
+                const ls = (await fs.readDir(d.path))
+                  .filter(f => !f.name.startsWith('.') && f.isFile())
+                  .map(f => ({name: f.name, path: f.path, size: f.size}));
+                return [...list, ...ls];
+              } catch (e) {
+                console.error('Error reading voice note folder', e);
+                return list;
+              }
+            }, []);
+          setFiles(fileList);
+          console.log('Directory files', fileList);
+        } catch (e) {
+          setFiles([]);
+          console.error(`Error reading from ${dir}`, e);
+        }
+      } else {
+        ToastAndroid.show(
+          'Permission to read files denied!',
+          ToastAndroid.SHORT,
+        );
+      }
+    };
+
+    fetchPermissions();
+  }, []);
   return (
     <>
       <StatusBar barStyle="dark-content" />
       <View contentInsetAdjustmentBehavior="automatic" style={styles.container}>
         <Text>Hello Voice Note Player</Text>
+        {files && files.length > 0
+          ? files.map(f => <TrackItem key={f.name} track={f} />)
+          : null}
       </View>
     </>
   );
@@ -32,7 +84,7 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'row',
+    flexDirection: 'column',
   },
 });
 
