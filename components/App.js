@@ -15,6 +15,7 @@ import {
   Text,
   PermissionsAndroid,
   ToastAndroid,
+  ScrollView,
 } from 'react-native';
 import * as fs from 'react-native-fs';
 import TrackItem from './TrackItem';
@@ -69,10 +70,12 @@ const App: () => Node = () => {
     <>
       <StatusBar barStyle="dark-content" />
       <View contentInsetAdjustmentBehavior="automatic" style={styles.container}>
-        <Text>Hello Voice Note Player</Text>
-        {files && files.length > 0
-          ? files.map(f => <TrackItem key={f.name} track={f} />)
-          : null}
+        <Text style={styles.header}>Whatsapp Voice Note Player</Text>
+        <ScrollView style={styles.view}>
+          {files && files.length > 0
+            ? files.map(f => <TrackItem key={f.name} track={f} />)
+            : null}
+        </ScrollView>
       </View>
     </>
   );
@@ -85,6 +88,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column',
+    backgroundColor: 'black',
+    height: '100%',
+    flex: 1,
+    textAlignVertical: 'top',
+  },
+  header: {
+    marginBottom: 10,
+    fontSize: 18,
+    fontWeight: '600',
+    color: 'magenta',
+  },
+  view: {
+    marginTop: 15,
+    width: '100%',
   },
 });
 
