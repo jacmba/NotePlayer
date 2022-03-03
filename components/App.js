@@ -28,7 +28,7 @@ const App: () => Node = () => {
 
   useEffect(() => {
     const fetchPermissions = async () => {
-      const granted = await PermissionsAndroid.check(
+      const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
       );
