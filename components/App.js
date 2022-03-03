@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     color: 'magenta',
+    fontFamily: 'Ubuntu-Regular',
   },
   view: {
     marginTop: 15,

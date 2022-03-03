@@ -85,11 +85,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '800',
     color: 'cyan',
+    fontFamily: 'Ubuntu-Regular',
   },
   info: {
     fontSize: 12,
-    fontWeight: '300',
+    fontWeight: '100',
     color: 'white',
+    fontFamily: 'Ubuntu-Regular',
   },
 });
 

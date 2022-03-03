@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '500',
     fontStyle: 'italic',
+    fontFamily: 'Ubuntu-Regular',
   },
   container: {
     alignContent: 'center',
