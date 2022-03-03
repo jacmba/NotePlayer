@@ -6,11 +6,16 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, {useState} from 'react';
 import type {Node} from 'react';
 import {View, StatusBar, StyleSheet, Text} from 'react-native';
+import * as fs from 'react-native-fs';
+
+const dir = '/storage/'; // '/WhatsApp/Media/WhatsApp VoiceNotes';
 
 const App: () => Node = () => {
+  //const [files, setFiles] = useState();
+  fs.readDir(dir).then(console.log).catch(console.error);
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -27,6 +32,7 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
     alignItems: 'center',
+    flexDirection: 'row',
   },
 });
 
