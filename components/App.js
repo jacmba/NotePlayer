@@ -59,7 +59,7 @@ const App: () => Node = () => {
       } else {
         ToastAndroid.show(
           'Permission to read files denied!',
-          ToastAndroid.SHORT,
+          ToastAndroid.LONG,
         );
       }
     };

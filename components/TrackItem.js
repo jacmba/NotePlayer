@@ -14,7 +14,7 @@ const TrackItem = ({track}) => {
       console.log('Sound playing. Current time:', currentTime);
       setTimeout(
         async () => setCurrentTime((await SoundPlayer.getInfo()).currentTime),
-        1000,
+        100,
       );
     }
   });
