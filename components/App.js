@@ -19,6 +19,7 @@ import {
 } from 'react-native';
 import * as fs from 'react-native-fs';
 import TrackItem from './TrackItem';
+import scanFiles from '../services/fileScanner';
 
 const dir =
   fs.ExternalStorageDirectoryPath + '/WhatsApp/Media/WhatsApp Voice Notes';
@@ -34,28 +35,8 @@ const App: () => Node = () => {
       );
 
       if (granted) {
-        try {
-          const fileList = await (
-            await fs.readDir(dir)
-          )
-            .filter(d => !d.name.startsWith('.') && d.isDirectory())
-            .reduce(async (list, d) => {
-              try {
-                const ls = (await fs.readDir(d.path))
-                  .filter(f => !f.name.startsWith('.') && f.isFile())
-                  .map(f => ({name: f.name, path: f.path, size: f.size}));
-                return [...list, ...ls];
-              } catch (e) {
-                console.error('Error reading voice note folder', e);
-                return list;
-              }
-            }, []);
-          setFiles(fileList);
-          console.log('Directory files', fileList);
-        } catch (e) {
-          setFiles([]);
-          console.error(`Error reading from ${dir}`, e);
-        }
+        const fileList = await scanFiles();
+        setFiles(fileList);
       } else {
         ToastAndroid.show(
           'Permission to read files denied!',

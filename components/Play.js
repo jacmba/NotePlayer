@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   progressBar: {
-    width: '75%',
+    width: '50%',
   },
 });
 
